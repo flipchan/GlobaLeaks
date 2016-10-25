@@ -8,7 +8,7 @@
 import binascii
 import os
 import re
-import base64
+from base64 import b64encode
 import json
 import random
 import shutil
@@ -53,11 +53,11 @@ def generateRandomKey(N):
     """
     Return a random key of N characters in a-zA-Z0-9
     """
-    return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(N)).encode('utf-8')
+    return b64encode(os.urandom(N))
 
 
 def generateRandomSalt():
-    #flask-scrypt's random hash gen , rewritten easy by flipchan
+    
     return b64encode(urandom(32)) 
 
 def generateRandomPassword():
