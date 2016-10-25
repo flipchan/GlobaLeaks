@@ -5,7 +5,7 @@
 #
 # GlobaLeaks security functions
 
-from base64 import b64encode
+from base64 import b64encode, b64decode
 import binascii
 import json
 import os
@@ -178,8 +178,8 @@ class GLSecureTemporaryFile(_TemporaryFileWrapper):
         self.initialize_cipher()
 
         key_json = {
-            'key': base64.b64encode(self.key),
-            'key_counter_nonce': base64.b64encode(self.key_counter_nonce)
+            'key': b64encode(self.key),
+            'key_counter_nonce': b64encode(self.key_counter_nonce)
         }
 
         log.debug("Key initialization at %s" % self.keypath)
@@ -283,8 +283,8 @@ class GLSecureFile(GLSecureTemporaryFile):
             with open(self.keypath, 'r') as kf:
                 key_json = json.load(kf)
 
-            self.key = base64.b64decode(key_json['key'])
-            self.key_counter_nonce = base64.b64decode(key_json['key_counter_nonce'])
+            self.key = b64decode(key_json['key'])
+            self.key_counter_nonce = b64decode(key_json['key_counter_nonce'])
             self.initialize_cipher()
 
         except Exception as axa:
